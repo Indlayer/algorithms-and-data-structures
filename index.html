@@ -1,0 +1,1531 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Алгоритмы и структуры данных | Лабораторные работы 1–12</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: #f5f6fa;
+      color: #1e293b;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Верхний декоративный баннер */
+    .top-banner {
+      height: 70px;
+      background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+      box-shadow: 0 4px 20px rgba(79, 70, 229, 0.2);
+    }
+
+    .container {
+      max-width: 1060px;
+      width: 100%;
+      margin: -35px auto 40px;
+      padding: 0 20px;
+      flex: 1;
+    }
+
+    /* Заголовок страницы и навигация */
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .main-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .student-badge {
+      font-size: 13px;
+      color: #475569;
+      background: #ffffff;
+      padding: 6px 14px;
+      border-radius: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      border: 1px solid #e2e8f0;
+    }
+
+    .btn-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #ffffff;
+      color: #4f46e5;
+      border: 1px solid #e2e8f0;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+    }
+
+    .btn-back:hover {
+      background: #eef2ff;
+      border-color: #c7d2fe;
+    }
+
+    /* Сетка каталога лабораторных работ (главная страница) */
+    .labs-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    @media (max-width: 768px) {
+      .labs-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .lab-card {
+      background: #ffffff;
+      border-radius: 14px;
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      cursor: pointer;
+      border: 1px solid #eef2f6;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+      transition: all 0.2s ease;
+    }
+
+    .lab-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(79, 70, 229, 0.08);
+      border-color: #c7d2fe;
+    }
+
+    .lab-badge {
+      background: #ede9fe;
+      color: #5b21b6;
+      font-weight: 700;
+      font-size: 15px;
+      padding: 8px 14px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lab-name {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1e293b;
+    }
+
+    /* Страница конкретной лабораторной работы */
+    .view-section {
+      display: none;
+    }
+
+    .view-section.active {
+      display: block;
+    }
+
+    .tasks-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    @media (max-width: 860px) {
+      .tasks-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .task-card {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 24px;
+      border: 1px solid #f1f5f9;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .task-header {
+      font-size: 16px;
+      font-weight: 700;
+      color: #4f46e5;
+    }
+
+    .task-desc {
+      font-size: 14px;
+      color: #334155;
+      line-height: 1.45;
+    }
+
+    .inputs-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 12px;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .input-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #64748b;
+    }
+
+    .input-field {
+      width: 100%;
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 14px;
+      color: #0f172a;
+      outline: none;
+      transition: border 0.15s ease;
+    }
+
+    .input-field:focus {
+      border-color: #6366f1;
+      background: #ffffff;
+    }
+
+    .btn-calc {
+      align-self: flex-start;
+      background: #5856d6;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 600;
+      border: none;
+      padding: 9px 22px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-calc:hover {
+      background: #4745be;
+      box-shadow: 0 3px 10px rgba(88, 86, 214, 0.3);
+    }
+
+    .result-box {
+      border: 1px dashed #cbd5e1;
+      background: #f8fafc;
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 13.5px;
+      color: #64748b;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      word-break: break-word;
+      white-space: pre-wrap;
+      font-family: inherit;
+    }
+
+    .result-box.computed {
+      border: 1px solid #c7d2fe;
+      background: #fdfdfe;
+      color: #1e1b4b;
+      font-weight: 500;
+    }
+
+    /* Моноширинный блок для трассировки и деревьев */
+    .result-box.mono {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 12px;
+      line-height: 1.4;
+      display: block;
+      max-height: 250px;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-banner"></div>
+
+  <div class="container">
+
+    <!-- ГЛАВНОЕ МЕНЮ: СПИСОК ЛАБОРАТОРНЫХ РАБОТ -->
+    <div id="home-view" class="view-section active">
+      <div class="header-bar">
+        <h1 class="main-title">Список лабораторных работ</h1>
+        <div class="student-badge">Белов Тимофей | гр. 243-321</div>
+      </div>
+
+      <div class="labs-grid">
+        <div class="lab-card" onclick="openLab(1)">
+          <div class="lab-badge">01</div>
+          <div class="lab-name">Лабораторная работа №1 (Линейные алгоритмы)</div>
+        </div>
+        <div class="lab-card" onclick="openLab(2)">
+          <div class="lab-badge">02</div>
+          <div class="lab-name">Лабораторная работа №2 (Алгоритмы ветвления)</div>
+        </div>
+        <div class="lab-card" onclick="openLab(3)">
+          <div class="lab-badge">03</div>
+          <div class="lab-name">Лабораторная работа №3 (Циклические алгоритмы)</div>
+        </div>
+        <div class="lab-card" onclick="openLab(4)">
+          <div class="lab-badge">04</div>
+          <div class="lab-name">Лабораторная работа №4 (Рекурсивные алгоритмы)</div>
+        </div>
+        <div class="lab-card" onclick="openLab(5)">
+          <div class="lab-badge">05</div>
+          <div class="lab-name">Лабораторная работа №5 (Одномерные массивы)</div>
+        </div>
+        <div class="lab-card" onclick="openLab(6)">
+          <div class="lab-badge">06</div>
+          <div class="lab-name">Лабораторная работа №6 (Двумерные массивы)</div>
+        </div>
+        <div class="lab-card" onclick="openLab(7)">
+          <div class="lab-badge">07</div>
+          <div class="lab-name">Лабораторная работа №7 (Сортировка пузырьком)</div>
+        </div>
+        <div class="lab-card" onclick="openLab(8)">
+          <div class="lab-badge">08</div>
+          <div class="lab-name">Лабораторная работа №8 (Сортировка вставками)</div>
+        </div>
+        <div class="lab-card" onclick="openLab(9)">
+          <div class="lab-badge">09</div>
+          <div class="lab-name">Лабораторная работа №9 (Сортировка выбором)</div>
+        </div>
+        <div class="lab-card" onclick="openLab(10)">
+          <div class="lab-badge">10</div>
+          <div class="lab-name">Лабораторная работа №10 (Бинарный поиск)</div>
+        </div>
+        <div class="lab-card" onclick="openLab(11)">
+          <div class="lab-badge">11</div>
+          <div class="lab-name">Лабораторная работа №11 (Работа с деревьями)</div>
+        </div>
+        <div class="lab-card" onclick="openLab(12)">
+          <div class="lab-badge">12</div>
+          <div class="lab-name">Лабораторная работа №12 (Очередь)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- КОНТЕЙНЕР ДЛЯ ВЫБРАННОЙ ЛАБОРАТОРНОЙ РАБОТЫ -->
+    <div id="lab-view" class="view-section">
+      <div class="header-bar">
+        <h1 class="main-title" id="lab-view-title">Лабораторная работа</h1>
+        <button class="btn-back" onclick="showHome()">← Назад к списку</button>
+      </div>
+      <div class="tasks-grid" id="tasks-container"></div>
+    </div>
+
+  </div>
+
+  <script>
+    // База данных заданий и функций для всех 12 лабораторных работ
+    const LABS_DATA = {
+      1: {
+        title: "Лабораторная работа 1: Линейные алгоритмы",
+        tasks: [
+          {
+            num: "01",
+            desc: "Даны стороны прямоугольника a и b. Найти его площадь S = a·b и периметр P = 2·(a + b).",
+            inputs: [{ id: "l1_t1_a", label: "Сторона a", def: "4" }, { id: "l1_t1_b", label: "Сторона b", def: "5" }],
+            calc: () => {
+              const a = parseFloat(document.getElementById("l1_t1_a").value) || 0;
+              const b = parseFloat(document.getElementById("l1_t1_b").value) || 0;
+              return `Площадь S = ${(a * b).toFixed(2)}, Периметр P = ${(2 * (a + b)).toFixed(2)}`;
+            }
+          },
+          {
+            num: "02",
+            desc: "Дан диаметр окружности d. Найти ее длину L = π·d (π = 3.14).",
+            inputs: [{ id: "l1_t2_d", label: "Диаметр d", def: "10" }],
+            calc: () => {
+              const d = parseFloat(document.getElementById("l1_t2_d").value) || 0;
+              return `Длина окружности L = ${(3.14 * d).toFixed(2)}`;
+            }
+          },
+          {
+            num: "03",
+            desc: "Даны два числа a и b. Найти их среднее арифметическое: (a + b)/2.",
+            inputs: [{ id: "l1_t3_a", label: "Число a", def: "7" }, { id: "l1_t3_b", label: "Число b", def: "13" }],
+            calc: () => {
+              const a = parseFloat(document.getElementById("l1_t3_a").value) || 0;
+              const b = parseFloat(document.getElementById("l1_t3_b").value) || 0;
+              return `Среднее арифметическое = ${((a + b) / 2).toFixed(2)}`;
+            }
+          },
+          {
+            num: "04",
+            desc: "Даны два ненулевых числа. Найти сумму, разность, произведение и частное их квадратов.",
+            inputs: [{ id: "l1_t4_a", label: "Число a", def: "4" }, { id: "l1_t4_b", label: "Число b", def: "2" }],
+            calc: () => {
+              const a = parseFloat(document.getElementById("l1_t4_a").value) || 0;
+              const b = parseFloat(document.getElementById("l1_t4_b").value) || 0;
+              if (a === 0 || b === 0) return "Ошибка: числа не должны быть 0";
+              const sqA = a * a, sqB = b * b;
+              return `Квадраты (${sqA} и ${sqB}):
+Сумма = ${sqA + sqB}, Разность = ${sqA - sqB}, Произведение = ${sqA * sqB}, Частное = ${(sqA / sqB).toFixed(2)}`;
+            }
+          },
+          {
+            num: "05",
+            desc: "Даны два ненулевых числа. Найти сумму, разность, произведение и частное их модулей.",
+            inputs: [{ id: "l1_t5_a", label: "Число a", def: "-5" }, { id: "l1_t5_b", label: "Число b", def: "2.5" }],
+            calc: () => {
+              const a = Math.abs(parseFloat(document.getElementById("l1_t5_a").value) || 0);
+              const b = Math.abs(parseFloat(document.getElementById("l1_t5_b").value) || 0);
+              if (a === 0 || b === 0) return "Ошибка: числа не должны быть 0";
+              return `Модули (${a} и ${b}):
+Сумма = ${a + b}, Разность = ${a - b}, Произведение = ${a * b}, Частное = ${(a / b).toFixed(2)}`;
+            }
+          },
+          {
+            num: "06",
+            desc: "Найти расстояние между двумя точками с заданными координатами (x1, y1) и (x2, y2).",
+            inputs: [
+              { id: "l1_t6_x1", label: "x1", def: "1" }, { id: "l1_t6_y1", label: "y1", def: "1" },
+              { id: "l1_t6_x2", label: "x2", def: "4" }, { id: "l1_t6_y2", label: "y2", def: "5" }
+            ],
+            calc: () => {
+              const x1 = parseFloat(document.getElementById("l1_t6_x1").value) || 0;
+              const y1 = parseFloat(document.getElementById("l1_t6_y1").value) || 0;
+              const x2 = parseFloat(document.getElementById("l1_t6_x2").value) || 0;
+              const y2 = parseFloat(document.getElementById("l1_t6_y2").value) || 0;
+              const d = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+              return `Расстояние между точками = ${d.toFixed(4)}`;
+            }
+          },
+          {
+            num: "07",
+            desc: "Даны три точки A, B, C на числовой оси. Найти длины отрезков AC и BC и их сумму.",
+            inputs: [{ id: "l1_t7_a", label: "Точка A", def: "2" }, { id: "l1_t7_b", label: "Точка B", def: "10" }, { id: "l1_t7_c", label: "Точка C", def: "5" }],
+            calc: () => {
+              const a = parseFloat(document.getElementById("l1_t7_a").value) || 0;
+              const b = parseFloat(document.getElementById("l1_t7_b").value) || 0;
+              const c = parseFloat(document.getElementById("l1_t7_c").value) || 0;
+              const ac = Math.abs(a - c), bc = Math.abs(b - c);
+              return `AC = ${ac}, BC = ${bc}, Сумма (AC + BC) = ${ac + bc}`;
+            }
+          },
+          {
+            num: "08",
+            desc: "Даны три точки A, B, C на числовой оси. Точка C между A и B. Найти произведение AC · BC.",
+            inputs: [{ id: "l1_t8_a", label: "Точка A", def: "1" }, { id: "l1_t8_b", label: "Точка B", def: "9" }, { id: "l1_t8_c", label: "Точка C", def: "4" }],
+            calc: () => {
+              const a = parseFloat(document.getElementById("l1_t8_a").value) || 0;
+              const b = parseFloat(document.getElementById("l1_t8_b").value) || 0;
+              const c = parseFloat(document.getElementById("l1_t8_c").value) || 0;
+              const ac = Math.abs(c - a), bc = Math.abs(b - c);
+              return `AC = ${ac}, BC = ${bc}, Произведение = ${ac * bc}`;
+            }
+          },
+          {
+            num: "09",
+            desc: "Противоположные вершины прямоугольника (x1, y1), (x2, y2). Найти периметр и площадь.",
+            inputs: [
+              { id: "l1_t9_x1", label: "x1", def: "1" }, { id: "l1_t9_y1", label: "y1", def: "2" },
+              { id: "l1_t9_x2", label: "x2", def: "6" }, { id: "l1_t9_y2", label: "y2", def: "5" }
+            ],
+            calc: () => {
+              const x1 = parseFloat(document.getElementById("l1_t9_x1").value) || 0;
+              const y1 = parseFloat(document.getElementById("l1_t9_y1").value) || 0;
+              const x2 = parseFloat(document.getElementById("l1_t9_x2").value) || 0;
+              const y2 = parseFloat(document.getElementById("l1_t9_y2").value) || 0;
+              const w = Math.abs(x2 - x1), h = Math.abs(y2 - y1);
+              return `Ширина = ${w}, Высота = ${h} => Периметр = ${2 * (w + h)}, Площадь = ${w * h}`;
+            }
+          },
+          {
+            num: "10",
+            desc: "Вершины треугольника: (x1, y1), (x2, y2), (x3, y3). Найти периметр и площадь (формула Герона).",
+            inputs: [
+              { id: "l1_t10_x1", label: "x1", def: "0" }, { id: "l1_t10_y1", label: "y1", def: "0" },
+              { id: "l1_t10_x2", label: "x2", def: "4" }, { id: "l1_t10_y2", label: "y2", def: "0" },
+              { id: "l1_t10_x3", label: "x3", def: "0" }, { id: "l1_t10_y3", label: "y3", def: "3" }
+            ],
+            calc: () => {
+              const x1 = parseFloat(document.getElementById("l1_t10_x1").value) || 0;
+              const y1 = parseFloat(document.getElementById("l1_t10_y1").value) || 0;
+              const x2 = parseFloat(document.getElementById("l1_t10_x2").value) || 0;
+              const y2 = parseFloat(document.getElementById("l1_t10_y2").value) || 0;
+              const x3 = parseFloat(document.getElementById("l1_t10_x3").value) || 0;
+              const y3 = parseFloat(document.getElementById("l1_t10_y3").value) || 0;
+              const a = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+              const b = Math.sqrt((x3 - x2) ** 2 + (y3 - y2) ** 2);
+              const c = Math.sqrt((x1 - x3) ** 2 + (y1 - y3) ** 2);
+              const p = a + b + c;
+              const hp = p / 2;
+              const s = Math.sqrt(hp * (hp - a) * (hp - b) * (hp - c));
+              return `Периметр P = ${p.toFixed(4)}, Площадь S = ${s.toFixed(4)}`;
+            }
+          },
+          {
+            num: "11",
+            desc: "Найти значение функции y = 3x^6 − 6x^2 − 7 при данном значении x.",
+            inputs: [{ id: "l1_t11_x", label: "Значение x", def: "2" }],
+            calc: () => {
+              const x = parseFloat(document.getElementById("l1_t11_x").value) || 0;
+              const y = 3 * (x ** 6) - 6 * (x ** 2) - 7;
+              return `y = 3*(${x}^6) - 6*(${x}^2) - 7 = ${y}`;
+            }
+          },
+          {
+            num: "12",
+            desc: "Найти значение функции y = 4(x−3)^6 − 7(x−3)^3 + 2 при данном значении x.",
+            inputs: [{ id: "l1_t12_x", label: "Значение x", def: "4" }],
+            calc: () => {
+              const x = parseFloat(document.getElementById("l1_t12_x").value) || 0;
+              const d = x - 3;
+              const y = 4 * (d ** 6) - 7 * (d ** 3) + 2;
+              return `y = 4*(${d}^6) - 7*(${d}^3) + 2 = ${y}`;
+            }
+          }
+        ]
+      },
+
+      2: {
+        title: "Лабораторная работа 2: Алгоритмы ветвления",
+        tasks: [
+          {
+            num: "01",
+            desc: "Даны переменные A и B. Если они не равны, присвоить каждой max(A, B), а если равны — присвоить 0.",
+            inputs: [{ id: "l2_t1_a", label: "A", def: "2" }, { id: "l2_t1_b", label: "B", def: "7" }],
+            calc: () => {
+              const a = parseInt(document.getElementById("l2_t1_a").value) || 0;
+              const b = parseInt(document.getElementById("l2_t1_b").value) || 0;
+              if (a !== b) {
+                const m = Math.max(a, b);
+                return `A = ${m}, B = ${m} (присвоен максимум)`;
+              }
+              return `A = 0, B = 0 (значения были равны)`;
+            }
+          },
+          {
+            num: "02",
+            desc: "Даны три числа. Найти сумму двух наибольших из них.",
+            inputs: [{ id: "l2_t2_a", label: "Число a", def: "8" }, { id: "l2_t2_b", label: "Число b", def: "3" }, { id: "l2_t2_c", label: "Число c", def: "5" }],
+            calc: () => {
+              const a = parseFloat(document.getElementById("l2_t2_a").value) || 0;
+              const b = parseFloat(document.getElementById("l2_t2_b").value) || 0;
+              const c = parseFloat(document.getElementById("l2_t2_c").value) || 0;
+              const sum2 = (a + b + c) - Math.min(a, b, c);
+              return `Сумма двух наибольших = ${sum2}`;
+            }
+          },
+          {
+            num: "03",
+            desc: "Точки A, B, C. Определить, какая из точек (B или C) ближе к A, и вывести расстояние.",
+            inputs: [
+              { id: "l2_t3_xa", label: "A: x", def: "0" }, { id: "l2_t3_ya", label: "A: y", def: "0" },
+              { id: "l2_t3_xb", label: "B: x", def: "3" }, { id: "l2_t3_yb", label: "B: y", def: "4" },
+              { id: "l2_t3_xc", label: "C: x", def: "1" }, { id: "l2_t3_yc", label: "C: y", def: "1" }
+            ],
+            calc: () => {
+              const xa = parseFloat(document.getElementById("l2_t3_xa").value) || 0;
+              const ya = parseFloat(document.getElementById("l2_t3_ya").value) || 0;
+              const xb = parseFloat(document.getElementById("l2_t3_xb").value) || 0;
+              const yb = parseFloat(document.getElementById("l2_t3_yb").value) || 0;
+              const xc = parseFloat(document.getElementById("l2_t3_xc").value) || 0;
+              const yc = parseFloat(document.getElementById("l2_t3_yc").value) || 0;
+              const db = Math.sqrt((xb - xa) ** 2 + (yb - ya) ** 2);
+              const dc = Math.sqrt((xc - xa) ** 2 + (yc - ya) ** 2);
+              if (db < dc) return `Точка B ближе к A (расстояние: ${db.toFixed(4)})`;
+              if (dc < db) return `Точка C ближе к A (расстояние: ${dc.toFixed(4)})`;
+              return `Точки B и C равноудалены от A (расстояние: ${db.toFixed(4)})`;
+            }
+          },
+          {
+            num: "04",
+            desc: "Даны координаты точки, не лежащей на осях. Определить номер координатной четверти.",
+            inputs: [{ id: "l2_t4_x", label: "Координата x", def: "-2" }, { id: "l2_t4_y", label: "Координата y", def: "3" }],
+            calc: () => {
+              const x = parseFloat(document.getElementById("l2_t4_x").value) || 0;
+              const y = parseFloat(document.getElementById("l2_t4_y").value) || 0;
+              if (x > 0 && y > 0) return "1-я координатная четверть";
+              if (x < 0 && y > 0) return "2-я координатная четверть";
+              if (x < 0 && y < 0) return "3-я координатная четверть";
+              if (x > 0 && y < 0) return "4-я координатная четверть";
+              return "Точка лежит на одной из осей координат";
+            }
+          },
+          {
+            num: "05",
+            desc: "Дано целое число. Вывести строку вида «отрицательное четное число», «нулевое число» и т. д.",
+            inputs: [{ id: "l2_t5_n", label: "Целое число", def: "-8" }],
+            calc: () => {
+              const n = parseInt(document.getElementById("l2_t5_n").value) || 0;
+              if (n === 0) return "нулевое число";
+              const s = n > 0 ? "положительное" : "отрицательное";
+              const p = n % 2 === 0 ? "четное" : "нечетное";
+              return `«${s} ${p} число»`;
+            }
+          },
+          {
+            num: "06",
+            desc: "Дано целое число 1–999. Вывести описание: «четное двузначное число», «нечетное трехзначное» и т. д.",
+            inputs: [{ id: "l2_t6_n", label: "Число 1-999", def: "42" }],
+            calc: () => {
+              const n = parseInt(document.getElementById("l2_t6_n").value) || 0;
+              if (n < 1 || n > 999) return "Число вне диапазона 1-999";
+              const p = n % 2 === 0 ? "четное" : "нечетное";
+              let d = "однозначное";
+              if (n >= 100) d = "трехзначное";
+              else if (n >= 10) d = "двузначное";
+              return `«${p} ${d} число»`;
+            }
+          },
+          {
+            num: "07",
+            desc: "Дан день (1–31) и месяц (1–12). Вывести дату в виде текста (например, «пятое января»).",
+            inputs: [{ id: "l2_t7_d", label: "День", def: "5" }, { id: "l2_t7_m", label: "Месяц", def: "1" }],
+            calc: () => {
+              const d = parseInt(document.getElementById("l2_t7_d").value) || 1;
+              const m = parseInt(document.getElementById("l2_t7_m").value) || 1;
+              const months = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"];
+              const days = {
+                1:"первое",2:"второе",3:"третье",4:"четвертое",5:"пятое",6:"шестое",7:"седьмое",8:"восьмое",9:"девятое",10:"десятое",
+                11:"одиннадцатое",12:"двенадцатое",13:"тринадцатое",14:"четырнадцатое",15:"пятнадцатое",16:"шестнадцатое",17:"семнадцатое",
+                18:"восемнадцатое",19:"девятнадцатое",20:"двадцатое",21:"двадцать первое",22:"двадцать второе",23:"двадцать третье",
+                24:"двадцать четвертое",25:"двадцать пятое",26:"двадцать шестое",27:"двадцать седьмое",28:"двадцать восьмое",
+                29:"двадцать девятое",30:"тридцатое",31:"тридцать первое"
+              };
+              if (m < 1 || m > 12 || d < 1 || d > 31) return "Некорректная дата";
+              return `«${days[d] || d} ${months[m - 1]}»`;
+            }
+          },
+          {
+            num: "08",
+            desc: "Число 10–40 (задания). Согласовать число со словами «учебное задание».",
+            inputs: [{ id: "l2_t8_n", label: "Кол-во заданий", def: "18" }],
+            calc: () => {
+              const n = parseInt(document.getElementById("l2_t8_n").value) || 10;
+              if (n < 10 || n > 40) return "Число вне диапазона 10-40";
+              const words10 = {10:"десять",11:"одиннадцать",12:"двенадцать",13:"тринадцать",14:"четырнадцать",15:"пятнадцать",16:"шестнадцать",17:"семнадцать",18:"восемнадцать",19:"девятнадцать"};
+              const tens = {2:"двадцать",3:"тридцать",4:"сорок"};
+              const units = {1:"одно",2:"два",3:"три",4:"четыре",5:"пять",6:"шесть",7:"семь",8:"восемь",9:"девять"};
+              let str = "", form = "учебных заданий";
+              if (n >= 10 && n <= 19) str = words10[n];
+              else if (n === 40) str = "сорок";
+              else {
+                const t = Math.floor(n / 10), u = n % 10;
+                str = u === 0 ? tens[t] : `${tens[t]} ${units[u]}`;
+                if (u === 1) form = "учебное задание";
+                else if (u >= 2 && u <= 4) form = "учебных задания";
+              }
+              return `«${str} ${form}»`;
+            }
+          },
+          {
+            num: "09",
+            desc: "Дано число 100–999. Вывести строку-описание (например: 256 — «двести пятьдесят шесть»).",
+            inputs: [{ id: "l2_t9_n", label: "Число 100-999", def: "256" }],
+            calc: () => {
+              const n = parseInt(document.getElementById("l2_t9_n").value) || 100;
+              if (n < 100 || n > 999) return "Число вне диапазона 100-999";
+              const h_map = {1:"сто",2:"двести",3:"триста",4:"четыреста",5:"пятьсот",6:"шестьсот",7:"семьсот",8:"восемьсот",9:"девятьсот"};
+              const t_map = {2:"двадцать",3:"тридцать",4:"сорок",5:"пятьдесят",6:"шестьдесят",7:"семьдесят",8:"восемьдесят",9:"девяносто"};
+              const teens = {10:"десять",11:"одиннадцать",12:"двенадцать",13:"тринадцать",14:"четырнадцать",15:"пятнадцать",16:"шестнадцать",17:"семнадцать",18:"восемнадцать",19:"девятнадцать"};
+              const u_map = {1:"один",2:"два",3:"три",4:"четыре",5:"пять",6:"шесть",7:"семь",8:"восемь",9:"девять"};
+              const h = Math.floor(n / 100), rem = n % 100, t = Math.floor(rem / 10), u = rem % 10;
+              const res = [h_map[h]];
+              if (rem >= 10 && rem <= 19) res.push(teens[rem]);
+              else {
+                if (t > 0) res.push(t_map[t]);
+                if (u > 0) res.push(u_map[u]);
+              }
+              return `«${res.join(" ")}»`;
+            }
+          },
+          {
+            num: "10",
+            desc: "Восточный календарь: 60-летний цикл (1984 год — «год зеленой крысы»). Определить название года.",
+            inputs: [{ id: "l2_t10_y", label: "Номер года", def: "2026" }],
+            calc: () => {
+              const year = parseInt(document.getElementById("l2_t10_y").value) || 1984;
+              let diff = (year - 1984) % 60;
+              if (diff < 0) diff += 60;
+              const sub = Math.floor(diff / 12), a_idx = diff % 12;
+              const animals = [
+                ["крысы","f"],["коровы","f"],["тигра","m"],["зайца","m"],
+                ["дракона","m"],["змеи","f"],["лошади","f"],["овцы","f"],
+                ["обезьяны","f"],["курицы","f"],["собаки","f"],["свиньи","f"]
+              ];
+              const colors = [
+                {m:"зеленого", f:"зеленой"}, {m:"красного", f:"красной"},
+                {m:"желтого", f:"желтой"}, {m:"белого", f:"белой"}, {m:"черного", f:"черной"}
+              ];
+              const [animal, gender] = animals[a_idx];
+              return `«год ${colors[sub][gender]} ${animal}»`;
+            }
+          }
+        ]
+      },
+
+      3: {
+        title: "Лабораторная работа 3: Циклические алгоритмы",
+        tasks: [
+          {
+            num: "01",
+            desc: "Дана цена 1 кг конфет. Вывести стоимость 0.1, 0.2, ... 1.0 кг конфет.",
+            inputs: [{ id: "l3_t1_p", label: "Цена 1 кг (руб)", def: "450" }],
+            calc: () => {
+              const p = parseFloat(document.getElementById("l3_t1_p").value) || 0;
+              let out = [];
+              for (let i = 1; i <= 10; i++) {
+                const w = (i / 10).toFixed(1);
+                out.push(`${w} кг = ${(w * p).toFixed(2)} руб.`);
+              }
+              return out.join("\n");
+            }
+          },
+          {
+            num: "02",
+            desc: "Дано целое число N (> 0). Найти произведение 1.1 · 1.2 · 1.3 ... (N сомножителей).",
+            inputs: [{ id: "l3_t2_n", label: "Число N", def: "5" }],
+            calc: () => {
+              const n = parseInt(document.getElementById("l3_t2_n").value) || 1;
+              let prod = 1.0;
+              for (let i = 1; i <= n; i++) prod *= (1.0 + i * 0.1);
+              return `Произведение (${n} сомножителей) = ${prod.toFixed(6)}`;
+            }
+          },
+          {
+            num: "03",
+            desc: "Найти N^2 через формулу N^2 = 1 + 3 + 5 + ... + (2N - 1) с промежуточными суммами.",
+            inputs: [{ id: "l3_t3_n", label: "Число N", def: "5" }],
+            calc: () => {
+              const n = parseInt(document.getElementById("l3_t3_n").value) || 1;
+              let s = 0, steps = [];
+              for (let i = 1; i <= n; i++) {
+                const odd = 2 * i - 1;
+                s += odd;
+                steps.push(`+ ${odd} => текущая сумма = ${s}`);
+              }
+              return `Итог: ${n}^2 = ${s}\n` + steps.join("\n");
+            }
+          },
+          {
+            num: "04",
+            desc: "Дано вещественное A и целое N (> 0). За один цикл найти сумму 1 + A + A^2 + ... + A^N.",
+            inputs: [{ id: "l3_t4_a", label: "Число A", def: "2" }, { id: "l3_t4_n", label: "Степень N", def: "4" }],
+            calc: () => {
+              const a = parseFloat(document.getElementById("l3_t4_a").value) || 1;
+              const n = parseInt(document.getElementById("l3_t4_n").value) || 1;
+              let total = 1.0, term = 1.0;
+              for (let i = 0; i < n; i++) { term *= a; total += term; }
+              return `Сумма 1 + A + ... + A^${n} = ${total}`;
+            }
+          },
+          {
+            num: "05",
+            desc: "Знакопеременная сумма: 1 − A + A^2 − A^3 + ... ± A^N за один цикл без использования if.",
+            inputs: [{ id: "l3_t5_a", label: "Число A", def: "2" }, { id: "l3_t5_n", label: "Степень N", def: "4" }],
+            calc: () => {
+              const a = parseFloat(document.getElementById("l3_t5_a").value) || 1;
+              const n = parseInt(document.getElementById("l3_t5_n").value) || 1;
+              let total = 1.0, term = 1.0, mult = -a;
+              for (let i = 0; i < n; i++) { term *= mult; total += term; }
+              return `Знакопеременная сумма = ${total}`;
+            }
+          },
+          {
+            num: "06",
+            desc: "Числа от A до B включительно; при этом каждое число k выводится ровно k раз.",
+            inputs: [{ id: "l3_t6_a", label: "Число A", def: "2" }, { id: "l3_t6_b", label: "Число B", def: "4" }],
+            calc: () => {
+              const a = parseInt(document.getElementById("l3_t6_a").value) || 1;
+              const b = parseInt(document.getElementById("l3_t6_b").value) || 1;
+              let res = [];
+              for (let num = a; num <= b; num++) {
+                for (let i = 0; i < num; i++) res.push(num);
+              }
+              return `[${res.join(", ")}]`;
+            }
+          },
+          {
+            num: "07",
+            desc: "Отрезки длины B на отрезке A. Найти незанятую часть без умножения и деления.",
+            inputs: [{ id: "l3_t7_a", label: "Длина A", def: "14.5" }, { id: "l3_t7_b", label: "Длина B", def: "3" }],
+            calc: () => {
+              let a = parseFloat(document.getElementById("l3_t7_a").value) || 0;
+              const b = parseFloat(document.getElementById("l3_t7_b").value) || 1;
+              while (a >= b) a -= b;
+              return `Остаток незанятой части = ${a.toFixed(2)}`;
+            }
+          },
+          {
+            num: "08",
+            desc: "Дано целое N (> 1). Найти наименьшее K, для которого 1 + 2 + ... + K >= N, и саму сумму.",
+            inputs: [{ id: "l3_t8_n", label: "Число N", def: "15" }],
+            calc: () => {
+              const n = parseInt(document.getElementById("l3_t8_n").value) || 2;
+              let s = 0, k = 0;
+              while (s < n) { k++; s += k; }
+              return `Наименьшее K = ${k}, сумма = ${s}`;
+            }
+          },
+          {
+            num: "09",
+            desc: "Вклад 1000 руб, рост на P% в месяц. Определить, через сколько месяцев сумма превысит 1100 руб.",
+            inputs: [{ id: "l3_t9_p", label: "Процент P (0-25)", def: "3.5" }],
+            calc: () => {
+              const p = parseFloat(document.getElementById("l3_t9_p").value) || 1;
+              let dep = 1000.0, m = 0;
+              while (dep <= 1100.0) { m++; dep += dep * (p / 100.0); }
+              return `Превысит через ${m} месяцев. Итоговая сумма = ${dep.toFixed(2)} руб.`;
+            }
+          },
+          {
+            num: "10",
+            desc: "Даны целые A и B. Найти их НОД по алгоритму Евклида.",
+            inputs: [{ id: "l3_t10_a", label: "Число A", def: "140" }, { id: "l3_t10_b", label: "Число B", def: "96" }],
+            calc: () => {
+              let x = parseInt(document.getElementById("l3_t10_a").value) || 1;
+              let y = parseInt(document.getElementById("l3_t10_b").value) || 1;
+              while (y !== 0) {
+                const temp = y;
+                y = x % y;
+                x = temp;
+              }
+              return `НОД = ${x}`;
+            }
+          }
+        ]
+      },
+
+      4: {
+        title: "Лабораторная работа 4: Рекурсивные алгоритмы",
+        tasks: [
+          {
+            num: "01",
+            desc: "Факториал числа: рекурсивно вычислить факториал n!.",
+            inputs: [{ id: "l4_t1_n", label: "Число n", def: "5" }],
+            calc: () => {
+              const n = parseInt(document.getElementById("l4_t1_n").value) || 0;
+              const fact = (k) => k <= 1 ? 1 : k * fact(k - 1);
+              return `${n}! = ${fact(n)}`;
+            }
+          },
+          {
+            num: "02",
+            desc: "Числа Фибоначчи: рекурсивно вычислить n-ое число Фибоначчи.",
+            inputs: [{ id: "l4_t2_n", label: "Номер n", def: "8" }],
+            calc: () => {
+              const n = parseInt(document.getElementById("l4_t2_n").value) || 1;
+              const fib = (k) => k <= 2 ? 1 : fib(k - 1) + fib(k - 2);
+              return `${n}-е число Фибоначчи = ${fib(n)}`;
+            }
+          },
+          {
+            num: "03",
+            desc: "Возведение в степень: рекурсивно возвести x в целую степень n.",
+            inputs: [{ id: "l4_t3_x", label: "Основание x", def: "2" }, { id: "l4_t3_n", label: "Степень n", def: "8" }],
+            calc: () => {
+              const x = parseFloat(document.getElementById("l4_t3_x").value) || 0;
+              const n = parseInt(document.getElementById("l4_t3_n").value) || 0;
+              const p = (b, exp) => {
+                if (exp === 0) return 1;
+                if (exp < 0) return 1 / p(b, -exp);
+                if (exp % 2 === 0) { const h = p(b, exp / 2); return h * h; }
+                return b * p(b, exp - 1);
+              };
+              return `${x}^${n} = ${p(x, n)}`;
+            }
+          },
+          {
+            num: "04",
+            desc: "Палиндром: рекурсивная проверка, является ли строка палиндромом.",
+            inputs: [{ id: "l4_t4_s", label: "Строка", def: "А роза упала на лапу Азора" }],
+            calc: () => {
+              const raw = document.getElementById("l4_t4_s").value;
+              const s = raw.toLowerCase().replace(/[^a-zа-я0-9]/gi, "");
+              const isPal = (t) => t.length <= 1 ? true : (t[0] === t[t.length - 1] && isPal(t.slice(1, -1)));
+              return `Строка «${raw}» — ${isPal(s) ? "ПАЛИНДРОМ" : "НЕ палиндром"}`;
+            }
+          },
+          {
+            num: "05",
+            desc: "Бинарный поиск: рекурсивный поиск элемента в отсортированном массиве.",
+            inputs: [{ id: "l4_t5_arr", label: "Массив через пробел", def: "10 23 35 42 56 67 78" }, { id: "l4_t5_tgt", label: "Искомое число", def: "42" }],
+            calc: () => {
+              const arr = document.getElementById("l4_t5_arr").value.split(" ").map(Number).filter(x => !isNaN(x)).sort((a,b)=>a-b);
+              const target = Number(document.getElementById("l4_t5_tgt").value);
+              const bsearch = (l, r) => {
+                if (l > r) return -1;
+                const mid = Math.floor((l + r) / 2);
+                if (arr[mid] === target) return mid;
+                return arr[mid] > target ? bsearch(l, mid - 1) : bsearch(mid + 1, r);
+              };
+              const idx = bsearch(0, arr.length - 1);
+              return idx !== -1 ? `Элемент ${target} найден на позиции (индекс): ${idx}` : `Элемент ${target} не найден`;
+            }
+          },
+          {
+            num: "06",
+            desc: "Обратный порядок слов: рекурсивно изменить порядок слов в строке на обратный.",
+            inputs: [{ id: "l4_t6_s", label: "Предложение", def: "студент изучает линейные алгоритмы" }],
+            calc: () => {
+              const s = document.getElementById("l4_t6_s").value.trim();
+              const rev = (str) => {
+                const idx = str.indexOf(" ");
+                if (idx === -1) return str;
+                return rev(str.slice(idx + 1)) + " " + str.slice(0, idx);
+              };
+              return `Результат: «${rev(s)}»`;
+            }
+          },
+          {
+            num: "07",
+            desc: "Разложение числа на сумму простых чисел: рекурсивный поиск слагаемых.",
+            inputs: [{ id: "l4_t7_n", label: "Число (> 1)", def: "28" }],
+            calc: () => {
+              const n = parseInt(document.getElementById("l4_t7_n").value) || 2;
+              const isPr = (k) => {
+                if (k < 2) return false;
+                for (let i = 2; i <= Math.sqrt(k); i++) if (k % i === 0) return false;
+                return true;
+              };
+              const decomp = (val, minP) => {
+                if (val === 0) return [];
+                if (val < 2) return null;
+                for (let p = minP; p <= val; p++) {
+                  if (isPr(p)) {
+                    const sub = decomp(val - p, p);
+                    if (sub !== null) return [p, ...sub];
+                  }
+                }
+                return null;
+              };
+              const res = decomp(n, 2);
+              return res ? `${n} = ${res.join(" + ")}` : "Не удалось разложить";
+            }
+          },
+          {
+            num: "08",
+            desc: "Подсчет количества цифр в заданном числе: рекурсивная функция.",
+            inputs: [{ id: "l4_t8_n", label: "Число", def: "1048576" }],
+            calc: () => {
+              const n = Math.abs(parseInt(document.getElementById("l4_t8_n").value) || 0);
+              const cnt = (v) => v < 10 ? 1 : 1 + cnt(Math.floor(v / 10));
+              return `Количество цифр = ${cnt(n)}`;
+            }
+          },
+          {
+            num: "09",
+            desc: "Рекурсивное решение головоломки «Ханойская башня».",
+            inputs: [{ id: "l4_t9_n", label: "Дисков (1-5)", def: "3" }],
+            calc: () => {
+              const n = Math.min(5, Math.max(1, parseInt(document.getElementById("l4_t9_n").value) || 3));
+              let moves = [];
+              const hanoi = (cnt, src, dst, aux) => {
+                if (cnt === 1) { moves.push(`Диск 1 со стержня ${src} на ${dst}`); return; }
+                hanoi(cnt - 1, src, aux, dst);
+                moves.push(`Диск ${cnt} со стержня ${src} на ${dst}`);
+                hanoi(cnt - 1, aux, dst, src);
+              };
+              hanoi(n, "A", "C", "B");
+              return `Всего ходов: ${moves.length}\n` + moves.map((m, i) => `${i + 1}. ${m}`).join("\n");
+            }
+          }
+        ]
+      },
+
+      5: {
+        title: "Лабораторная работа 5: Одномерные массивы",
+        tasks: [
+          {
+            num: "01",
+            desc: "Сформировать массив размера N из первых нечетных положительных чисел: 1, 3, 5...",
+            inputs: [{ id: "l5_t1_n", label: "Размер N", def: "7" }],
+            calc: () => {
+              const n = parseInt(document.getElementById("l5_t1_n").value) || 1;
+              const res = Array.from({length: n}, (_, i) => 2 * i + 1);
+              return `[${res.join(", ")}]`;
+            }
+          },
+          {
+            num: "02",
+            desc: "Геометрическая прогрессия: размер N, первый член A, знаменатель D.",
+            inputs: [{ id: "l5_t2_n", label: "N", def: "5" }, { id: "l5_t2_a", label: "A", def: "2" }, { id: "l5_t2_d", label: "D", def: "3" }],
+            calc: () => {
+              const n = parseInt(document.getElementById("l5_t2_n").value) || 1;
+              const a = parseFloat(document.getElementById("l5_t2_a").value) || 1;
+              const d = parseFloat(document.getElementById("l5_t2_d").value) || 1;
+              let curr = a, res = [];
+              for (let i = 0; i < n; i++) { res.push(curr); curr *= d; }
+              return `[${res.join(", ")}]`;
+            }
+          },
+          {
+            num: "03",
+            desc: "Массив размера N: первый равен A, второй B, а каждый последующий равен сумме всех предыдущих.",
+            inputs: [{ id: "l5_t3_n", label: "N (> 2)", def: "6" }, { id: "l5_t3_a", label: "A", def: "1" }, { id: "l5_t3_b", label: "B", def: "2" }],
+            calc: () => {
+              const n = parseInt(document.getElementById("l5_t3_n").value) || 3;
+              const a = parseInt(document.getElementById("l5_t3_a").value) || 1;
+              const b = parseInt(document.getElementById("l5_t3_b").value) || 2;
+              let arr = [a, b], s = a + b;
+              for (let i = 2; i < n; i++) { arr.push(s); s += s; }
+              return `[${arr.join(", ")}]`;
+            }
+          },
+          {
+            num: "04",
+            desc: "Вывести элементы массива в порядке: A1, AN, A2, AN-1, A3, AN-2...",
+            inputs: [{ id: "l5_t4_arr", label: "Массив через пробел", def: "10 20 30 40 50 60" }],
+            calc: () => {
+              const arr = document.getElementById("l5_t4_arr").value.split(" ").map(Number).filter(x => !isNaN(x));
+              let l = 0, r = arr.length - 1, out = [];
+              while (l <= r) {
+                out.push(arr[l]);
+                if (l !== r) out.push(arr[r]);
+                l++; r--;
+              }
+              return `[${out.join(", ")}]`;
+            }
+          },
+          {
+            num: "05",
+            desc: "Сначала элементы с нечетными номерами по возрастанию, затем с четными по убыванию.",
+            inputs: [{ id: "l5_t5_arr", label: "Массив через пробел", def: "1 2 3 4 5 6 7" }],
+            calc: () => {
+              const arr = document.getElementById("l5_t5_arr").value.split(" ").map(Number).filter(x => !isNaN(x));
+              const oddPos = arr.filter((_, i) => i % 2 === 0);
+              const evenPos = arr.filter((_, i) => i % 2 !== 0).reverse();
+              return `[${[...oddPos, ...evenPos].join(", ")}]`;
+            }
+          },
+          {
+            num: "06",
+            desc: "Найти среднее арифметическое элементов массива с номерами от K до L (1-based).",
+            inputs: [{ id: "l5_t6_arr", label: "Массив", def: "4 8 12 16 20 24" }, { id: "l5_t6_k", label: "K", def: "2" }, { id: "l5_t6_l", label: "L", def: "5" }],
+            calc: () => {
+              const arr = document.getElementById("l5_t6_arr").value.split(" ").map(Number).filter(x => !isNaN(x));
+              const k = parseInt(document.getElementById("l5_t6_k").value) || 1;
+              const l = parseInt(document.getElementById("l5_t6_l").value) || arr.length;
+              const sub = arr.slice(k - 1, l);
+              const avg = sub.reduce((a, b) => a + b, 0) / sub.length;
+              return `Срез: [${sub.join(", ")}] => Среднее = ${avg.toFixed(2)}`;
+            }
+          },
+          {
+            num: "07",
+            desc: "Проверить, образуют ли элементы арифметическую прогрессию (вернуть разность или 0).",
+            inputs: [{ id: "l5_t7_arr", label: "Массив чисел", def: "3 7 11 15 19" }],
+            calc: () => {
+              const arr = document.getElementById("l5_t7_arr").value.split(" ").map(Number).filter(x => !isNaN(x));
+              if (arr.length < 2) return "0 (массив слишком короткий)";
+              const diff = arr[1] - arr[0];
+              for (let i = 2; i < arr.length; i++) {
+                if (arr[i] - arr[i - 1] !== diff) return "0 (не образует арифметическую прогрессию)";
+              }
+              return `Образует прогрессию с разностью = ${diff}`;
+            }
+          },
+          {
+            num: "08",
+            desc: "Найти минимальный элемент из его элементов с четными номерами (A2, A4, A6...).",
+            inputs: [{ id: "l5_t8_arr", label: "Массив", def: "15 24 7 18 99 12 30" }],
+            calc: () => {
+              const arr = document.getElementById("l5_t8_arr").value.split(" ").map(Number).filter(x => !isNaN(x));
+              const evens = arr.filter((_, i) => i % 2 !== 0);
+              return evens.length ? `Четные позиции: [${evens.join(", ")}] => Минимальный = ${Math.min(...evens)}` : "Нет четных позиций";
+            }
+          },
+          {
+            num: "09",
+            desc: "Найти номер (1-based) последнего локального максимума в массиве.",
+            inputs: [{ id: "l5_t9_arr", label: "Массив", def: "1 5 3 7 2 9 4" }],
+            calc: () => {
+              const arr = document.getElementById("l5_t9_arr").value.split(" ").map(Number).filter(x => !isNaN(x));
+              let last = -1;
+              for (let i = 0; i < arr.length; i++) {
+                const l_ok = (i === 0 || arr[i] > arr[i - 1]);
+                const r_ok = (i === arr.length - 1 || arr[i] > arr[i + 1]);
+                if (l_ok && r_ok) last = i + 1;
+              }
+              return last !== -1 ? `Номер последнего локального максимума: ${last} (значение: ${arr[last - 1]})` : "Локальных максимумов нет";
+            }
+          },
+          {
+            num: "10",
+            desc: "Массив содержит ровно два одинаковых элемента. Найти их номера в порядке возрастания.",
+            inputs: [{ id: "l5_t10_arr", label: "Массив с дубликатом", def: "14 25 33 42 25 88 90" }],
+            calc: () => {
+              const arr = document.getElementById("l5_t10_arr").value.split(" ").map(Number).filter(x => !isNaN(x));
+              const map = {};
+              for (let i = 0; i < arr.length; i++) {
+                if (arr[i] in map) return `Одинаковые элементы на позициях: ${map[arr[i]]} и ${i + 1} (значение: ${arr[i]})`;
+                map[arr[i]] = i + 1;
+              }
+              return "Одинаковых элементов не найдено";
+            }
+          }
+        ]
+      },
+
+      6: {
+        title: "Лабораторная работа 6: Двумерные массивы",
+        tasks: [
+          {
+            num: "01",
+            desc: "Обход квадратной нечетной матрицы против часовой стрелки по спирали.",
+            inputs: [{ id: "l6_t1_m", label: "Матрица 3x3 (строки через запятую)", def: "1 2 3, 4 5 6, 7 8 9" }],
+            calc: () => {
+              const raw = document.getElementById("l6_t1_m").value;
+              const mat = raw.split(",").map(r => r.trim().split(" ").map(Number));
+              const m = mat.length;
+              let res = [], layers = Math.floor((m + 1) / 2);
+              for (let l = 0; l < layers; l++) {
+                for (let r = l; r < m - l; r++) res.push(mat[r][l]);
+                for (let c = l + 1; c < m - l; c++) res.push(mat[m - 1 - l][c]);
+                for (let r = m - 2 - l; r >= l; r--) res.push(mat[r][m - 1 - l]);
+                for (let c = m - 2 - l; c > l; c--) res.push(mat[l][c]);
+              }
+              return `Спиральный обход: [${res.join(", ")}]`;
+            }
+          },
+          {
+            num: "02",
+            desc: "Дана матрица M × N и число K. Найти сумму и произведение K-й строки.",
+            inputs: [{ id: "l6_t2_m", label: "Матрица", def: "1 2 3 4, 5 1 2 3, 4 2 5 1" }, { id: "l6_t2_k", label: "Строка K (1-based)", def: "2" }],
+            calc: () => {
+              const mat = document.getElementById("l6_t2_m").value.split(",").map(r => r.trim().split(" ").map(Number));
+              const k = parseInt(document.getElementById("l6_t2_k").value) || 1;
+              const row = mat[k - 1] || [];
+              const sum = row.reduce((a, b) => a + b, 0);
+              const prod = row.reduce((a, b) => a * b, 1);
+              return `Строка ${k}: [${row.join(", ")}]\nСумма = ${sum}, Произведение = ${prod}`;
+            }
+          },
+          {
+            num: "03",
+            desc: "Найти номер столбца с наименьшим произведением элементов и само произведение.",
+            inputs: [{ id: "l6_t3_m", label: "Матрица", def: "1 2 3 4, 5 1 2 3, 4 2 5 1" }],
+            calc: () => {
+              const mat = document.getElementById("l6_t3_m").value.split(",").map(r => r.trim().split(" ").map(Number));
+              const m = mat.length, n = mat[0].length;
+              let minCol = 1, minProd = Infinity;
+              for (let c = 0; c < n; c++) {
+                let prod = 1;
+                for (let r = 0; r < m; r++) prod *= mat[r][c];
+                if (prod < minProd) { minProd = prod; minCol = c + 1; }
+              }
+              return `Столбец № ${minCol} с минимальным произведением = ${minProd}`;
+            }
+          },
+          {
+            num: "04",
+            desc: "В каждом столбце найти количество элементов, больших среднего арифметического столбца.",
+            inputs: [{ id: "l6_t4_m", label: "Матрица", def: "1 2 3 4, 5 1 2 3, 4 2 5 1" }],
+            calc: () => {
+              const mat = document.getElementById("l6_t4_m").value.split(",").map(r => r.trim().split(" ").map(Number));
+              const m = mat.length, n = mat[0].length, res = [];
+              for (let c = 0; c < n; c++) {
+                const col = mat.map(r => r[c]);
+                const avg = col.reduce((a, b) => a + b, 0) / m;
+                res.push(col.filter(x => x > avg).length);
+              }
+              return `Количество элементов > среднего по столбцам: [${res.join(", ")}]`;
+            }
+          },
+          {
+            num: "05",
+            desc: "Найти номер первого столбца, содержащего только нечетные числа (или 0).",
+            inputs: [{ id: "l6_t5_m", label: "Матрица", def: "2 3 4, 4 7 6, 8 5 2" }],
+            calc: () => {
+              const mat = document.getElementById("l6_t5_m").value.split(",").map(r => r.trim().split(" ").map(Number));
+              const m = mat.length, n = mat[0].length;
+              for (let c = 0; c < n; c++) {
+                if (mat.every(r => r[c] % 2 !== 0)) return `Номер первого чисто нечетного столбца: ${c + 1}`;
+              }
+              return "0 (таких столбцов нет)";
+            }
+          },
+          {
+            num: "06",
+            desc: "Поменять местами минимальный и максимальный элемент в каждой строке.",
+            inputs: [{ id: "l6_t6_m", label: "Матрица", def: "9 2 5, 1 8 3" }],
+            calc: () => {
+              const mat = document.getElementById("l6_t6_m").value.split(",").map(r => r.trim().split(" ").map(Number));
+              const res = mat.map(row => {
+                const r = [...row];
+                const iMin = r.indexOf(Math.min(...r));
+                const iMax = r.indexOf(Math.max(...r));
+                const tmp = r[iMin]; r[iMin] = r[iMax]; r[iMax] = tmp;
+                return r;
+              });
+              return res.map(r => `[${r.join(", ")}]`).join("\n");
+            }
+          },
+          {
+            num: "07",
+            desc: "Поменять местами столбцы, содержащие минимальный и максимальный элементы матрицы.",
+            inputs: [{ id: "l6_t7_m", label: "Матрица", def: "10 20 5, 99 15 30" }],
+            calc: () => {
+              const mat = document.getElementById("l6_t7_m").value.split(",").map(r => r.trim().split(" ").map(Number));
+              let mn = Infinity, mx = -Infinity, cMn = 0, cMx = 0;
+              for (let r = 0; r < mat.length; r++) {
+                for (let c = 0; c < mat[0].length; c++) {
+                  if (mat[r][c] < mn) { mn = mat[r][c]; cMn = c; }
+                  if (mat[r][c] > mx) { mx = mat[r][c]; cMx = c; }
+                }
+              }
+              const res = mat.map(row => {
+                const r = [...row];
+                const tmp = r[cMn]; r[cMn] = r[cMx]; r[cMx] = tmp;
+                return r;
+              });
+              return `Столбцы ${cMn + 1} и ${cMx + 1} обменены:\n` + res.map(r => `[${r.join(", ")}]`).join("\n");
+            }
+          },
+          {
+            num: "08",
+            desc: "Поменять местами левую верхнюю и правую нижнюю четверти матрицы (M и N четные).",
+            inputs: [{ id: "l6_t8_m", label: "Матрица 4x4", def: "1 2 7 8, 3 4 9 1, 5 5 99 99, 6 6 88 88" }],
+            calc: () => {
+              const mat = document.getElementById("l6_t8_m").value.split(",").map(r => r.trim().split(" ").map(Number));
+              const m = mat.length, n = mat[0].length, hm = Math.floor(m / 2), hn = Math.floor(n / 2);
+              const res = mat.map(r => [...r]);
+              for (let r = 0; r < hm; r++) {
+                for (let c = 0; c < hn; c++) {
+                  const tmp = res[r][c];
+                  res[r][c] = res[r + hm][c + hn];
+                  res[r + hm][c + hn] = tmp;
+                }
+              }
+              return res.map(r => `[${r.join(", ")}]`).join("\n");
+            }
+          },
+          {
+            num: "09",
+            desc: "Упорядочить строки матрицы по возрастанию их первых элементов.",
+            inputs: [{ id: "l6_t9_m", label: "Матрица", def: "50 1 2, 10 8 9, 30 4 5" }],
+            calc: () => {
+              const mat = document.getElementById("l6_t9_m").value.split(",").map(r => r.trim().split(" ").map(Number));
+              const sorted = [...mat].sort((a, b) => a[0] - b[0]);
+              return sorted.map(r => `[${r.join(", ")}]`).join("\n");
+            }
+          },
+          {
+            num: "10",
+            desc: "Суммы элементов каждой диагонали, параллельной главной (для квадратной матрицы).",
+            inputs: [{ id: "l6_t10_m", label: "Матрица 3x3", def: "1 2 3, 4 5 6, 7 8 9" }],
+            calc: () => {
+              const mat = document.getElementById("l6_t10_m").value.split(",").map(r => r.trim().split(" ").map(Number));
+              const m = mat.length;
+              let lines = [];
+              for (let d = m - 1; d >= -(m - 1); d--) {
+                let s = 0, elems = [];
+                for (let r = 0; r < m; r++) {
+                  const c = r - d;
+                  if (c >= 0 && c < m) { s += mat[r][c]; elems.push(mat[r][c]); }
+                }
+                lines.push(`Диагональ [${elems.join(", ")}] => сумма = ${s}`);
+              }
+              return lines.join("\n");
+            }
+          }
+        ]
+      },
+
+      7: {
+        title: "Лабораторная работа 7: Сортировка пузырьком",
+        tasks: [
+          {
+            num: "01",
+            desc: "Пошаговая сортировка пузырьком с подсчетом сравнений, перестановок и оптимизацией swapped.",
+            inputs: [{ id: "l7_arr", label: "Массив чисел через пробел", def: "64 34 25 12 22 11 90" }],
+            isMono: true,
+            calc: () => {
+              const arr = document.getElementById("l7_arr").value.split(" ").map(Number).filter(x => !isNaN(x));
+              let a = [...arr], n = a.length, cmp = 0, swp = 0, trace = [`Исходный: [${a.join(", ")}]`];
+              for (let i = 0; i < n - 1; i++) {
+                let swapped = false;
+                trace.push(`\n--- Проход ${i + 1} ---`);
+                for (let j = 0; j < n - 1 - i; j++) {
+                  cmp++;
+                  if (a[j] > a[j + 1]) {
+                    const t = a[j]; a[j] = a[j + 1]; a[j + 1] = t;
+                    swp++; swapped = true;
+                    trace.push(`  Обмен [${a[j+1]} <-> ${a[j]}] => [${a.join(", ")}]`);
+                  }
+                }
+                if (!swapped) { trace.push("  Массив уже отсортирован (ранний выход)."); break; }
+              }
+              trace.push(`\nИтог: [${a.join(", ")}]\nСравнений: ${cmp}, Перестановок: ${swp}`);
+              return trace.join("\n");
+            }
+          }
+        ]
+      },
+
+      8: {
+        title: "Лабораторная работа 8: Сортировка вставками",
+        tasks: [
+          {
+            num: "01",
+            desc: "Пошаговая сортировка вставками (Insertion Sort) со сдвигом элементов и подсчетом операций.",
+            inputs: [{ id: "l8_arr", label: "Массив чисел через пробел", def: "12 11 13 5 6 7" }],
+            isMono: true,
+            calc: () => {
+              const arr = document.getElementById("l8_arr").value.split(" ").map(Number).filter(x => !isNaN(x));
+              let a = [...arr], n = a.length, cmp = 0, shifts = 0, trace = [`Исходный: [${a.join(", ")}]`];
+              for (let i = 1; i < n; i++) {
+                let key = a[i], j = i - 1;
+                trace.push(`\n--- Шаг ${i}: вставка ключа ${key} ---`);
+                while (j >= 0) {
+                  cmp++;
+                  if (a[j] > key) {
+                    a[j + 1] = a[j]; shifts++;
+                    trace.push(`  Сдвиг ${a[j]} на индекс ${j + 1}`);
+                    j--;
+                  } else break;
+                }
+                a[j + 1] = key;
+                trace.push(`  Вставка ключа ${key} на позицию ${j + 1} => [${a.join(", ")}]`);
+              }
+              trace.push(`\nИтог: [${a.join(", ")}]\nСравнений: ${cmp}, Сдвигов: ${shifts}`);
+              return trace.join("\n");
+            }
+          }
+        ]
+      },
+
+      9: {
+        title: "Лабораторная работа 9: Сортировка выбором",
+        tasks: [
+          {
+            num: "01",
+            desc: "Пошаговая сортировка выбором (Selection Sort): поиск минимума в суффиксе и обмен.",
+            inputs: [{ id: "l9_arr", label: "Массив чисел через пробел", def: "64 25 12 22 11" }],
+            isMono: true,
+            calc: () => {
+              const arr = document.getElementById("l9_arr").value.split(" ").map(Number).filter(x => !isNaN(x));
+              let a = [...arr], n = a.length, cmp = 0, swp = 0, trace = [`Исходный: [${a.join(", ")}]`];
+              for (let i = 0; i < n - 1; i++) {
+                let minIdx = i;
+                trace.push(`\n--- Шаг ${i + 1}: поиск минимума в диапазоне [${i}..${n-1}] ---`);
+                for (let j = i + 1; j < n; j++) {
+                  cmp++;
+                  if (a[j] < a[minIdx]) minIdx = j;
+                }
+                trace.push(`  Найден минимум: ${a[minIdx]} на позиции ${minIdx}`);
+                if (minIdx !== i) {
+                  const t = a[i]; a[i] = a[minIdx]; a[minIdx] = t;
+                  swp++;
+                  trace.push(`  Обмен с позицией ${i} => [${a.join(", ")}]`);
+                } else {
+                  trace.push(`  Элемент ${a[i]} уже на правильной позиции`);
+                }
+              }
+              trace.push(`\nИтог: [${a.join(", ")}]\nСравнений: ${cmp}, Обменов: ${swp}`);
+              return trace.join("\n");
+            }
+          }
+        ]
+      },
+
+      10: {
+        title: "Лабораторная работа 10: Бинарный поиск",
+        tasks: [
+          {
+            num: "01",
+            desc: "Пошаговый бинарный поиск числа в отсортированном массиве с выводом границ деления.",
+            inputs: [
+              { id: "l10_arr", label: "Массив чисел", def: "2 5 8 12 16 23 38 45 56 72 91" },
+              { id: "l10_tgt", label: "Искомое число", def: "23" }
+            ],
+            isMono: true,
+            calc: () => {
+              const arr = document.getElementById("l10_arr").value.split(" ").map(Number).filter(x => !isNaN(x)).sort((a,b)=>a-b);
+              const target = Number(document.getElementById("l10_tgt").value);
+              let l = 0, r = arr.length - 1, step = 0, trace = [`Массив: [${arr.join(", ")}]`, `Ищем: ${target}\n`];
+              while (l <= r) {
+                step++;
+                const mid = Math.floor((l + r) / 2);
+                trace.push(`Шаг ${step}: диапазон [${l}..${r}], mid=${mid}, значение arr[${mid}]=${arr[mid]}`);
+                if (arr[mid] === target) {
+                  trace.push(`  -> НАЙДЕНО на индексе ${mid} за ${step} шагов!`);
+                  return trace.join("\n");
+                } else if (arr[mid] < target) {
+                  trace.push(`  -> ${arr[mid]} < ${target}: отбрасываем левую часть, left = ${mid + 1}`);
+                  l = mid + 1;
+                } else {
+                  trace.push(`  -> ${arr[mid]} > ${target}: отбрасываем правую часть, right = ${mid - 1}`);
+                  r = mid - 1;
+                }
+              }
+              trace.push(`  -> Элемент ${target} в массиве НЕ НАЙДЕН (затрачено ${step} шагов).`);
+              return trace.join("\n");
+            }
+          }
+        ]
+      },
+
+      11: {
+        title: "Лабораторная работа 11: Работа с деревьями",
+        tasks: [
+          {
+            num: "01",
+            desc: "Построение BST (дерева поиска), 4 алгоритма обхода (Pre-order, In-order, Post-order, BFS) и поиск.",
+            inputs: [
+              { id: "l11_vals", label: "Элементы дерева (через пробел)", def: "50 30 70 20 40 60 80" },
+              { id: "l11_find", label: "Число для поиска", def: "40" }
+            ],
+            isMono: true,
+            calc: () => {
+              const vals = document.getElementById("l11_vals").value.split(" ").map(Number).filter(x => !isNaN(x));
+              const findVal = Number(document.getElementById("l11_find").value);
+              class Node { constructor(v) { this.v = v; this.l = null; this.r = null; } }
+              let root = null;
+              const ins = (n, v) => {
+                if (!n) return new Node(v);
+                if (v < n.v) n.l = ins(n.l, v);
+                else if (v > n.v) n.r = ins(n.r, v);
+                return n;
+              };
+              vals.forEach(v => root = ins(root, v));
+
+              let pre = [], inO = [], post = [];
+              const walk = (n) => {
+                if (!n) return;
+                pre.push(n.v);
+                walk(n.l);
+                inO.push(n.v);
+                walk(n.r);
+                post.push(n.v);
+              };
+              walk(root);
+
+              let bfs = [], q = [root];
+              while (q.length && root) {
+                const curr = q.shift();
+                bfs.push(curr.v);
+                if (curr.l) q.push(curr.l);
+                if (curr.r) q.push(curr.r);
+              }
+
+              const search = (n, v) => !n ? false : (n.v === v ? true : (v < n.v ? search(n.l, v) : search(n.r, v)));
+              const found = search(root, findVal);
+
+              return `Добавлены элементы: [${vals.join(", ")}]\n\n` +
+                     `1. Прямой обход (Pre-order, К-Л-П):   [${pre.join(", ")}]\n` +
+                     `2. Симметричный (In-order, отсорт):  [${inO.join(", ")}]\n` +
+                     `3. Обратный (Post-order, Л-П-К):     [${post.join(", ")}]\n` +
+                     `4. В ширину (Level-order / BFS):     [${bfs.join(", ")}]\n\n` +
+                     `Поиск числа ${findVal}: ${found ? "НАЙДЕНО в дереве!" : "НЕ НАЙДЕНО"}`;
+            }
+          }
+        ]
+      },
+
+      12: {
+        title: "Лабораторная работа 12: Очередь",
+        tasks: [
+          {
+            num: "01",
+            desc: "Моделирование работы структуры данных Очередь (FIFO) и диспетчера веб-запросов.",
+            inputs: [
+              { id: "l12_items", label: "Элементы очереди (через запятую)", def: "GET /api/user, POST /login, GET /cart" }
+            ],
+            isMono: true,
+            calc: () => {
+              const raw = document.getElementById("l12_items").value;
+              const items = raw.split(",").map(s => s.trim()).filter(Boolean);
+              let q = [...items];
+              let log = [`Исходная очередь (${q.length} эл.):\n` + q.map((it, i) => `  [${i+1}] ${it}`).join("\n")];
+              log.push(`\n--- Обработка задач диспетчером по принципу FIFO ---`);
+              let processed = 0;
+              while (q.length > 0) {
+                processed++;
+                const task = q.shift();
+                log.push(`  [*] Обработан запрос #${processed}: "${task}" (в очереди осталось: ${q.length})`);
+              }
+              log.push(`\nВсе запросы успешно обработаны. Очередь пуста.`);
+              return log.join("\n");
+            }
+          }
+        ]
+      }
+    };
+
+    function showHome() {
+      document.getElementById("lab-view").classList.remove("active");
+      document.getElementById("home-view").classList.add("active");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function openLab(num) {
+      const data = LABS_DATA[num];
+      if (!data) return;
+
+      document.getElementById("lab-view-title").innerText = data.title;
+      const container = document.getElementById("tasks-container");
+      container.innerHTML = "";
+
+      data.tasks.forEach((task, idx) => {
+        const card = document.createElement("div");
+        card.className = "task-card";
+
+        let inputsHtml = "";
+        if (task.inputs && task.inputs.length > 0) {
+          inputsHtml = `<div class="inputs-row">` +
+            task.inputs.map(inp => `
+              <div class="input-group">
+                <label class="input-label" for="${inp.id}">${inp.label}</label>
+                <input class="input-field" id="${inp.id}" value="${inp.def}" placeholder="Например, ${inp.def}">
+              </div>
+            `).join("") +
+          `</div>`;
+        }
+
+        const resBoxId = `res_l${num}_t${idx}`;
+
+        card.innerHTML = `
+          <div class="task-header">Задача ${task.num}</div>
+          <div class="task-desc">${task.desc}</div>
+          ${inputsHtml}
+          <button class="btn-calc" onclick="calculateTask(${num}, ${idx}, '${resBoxId}')">Вычислить</button>
+          <div class="result-box ${task.isMono ? 'mono' : ''}" id="${resBoxId}">Результат появится здесь</div>
+        `;
+
+        container.appendChild(card);
+      });
+
+      document.getElementById("home-view").classList.remove("active");
+      document.getElementById("lab-view").classList.add("active");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function calculateTask(labNum, taskIdx, resBoxId) {
+      const task = LABS_DATA[labNum].tasks[taskIdx];
+      const resBox = document.getElementById(resBoxId);
+      try {
+        const result = task.calc();
+        resBox.innerText = result;
+        resBox.classList.add("computed");
+      } catch (e) {
+        resBox.innerText = "Ошибка вычисления: " + e.message;
+      }
+    }
+  </script>
+</body>
+</html>
